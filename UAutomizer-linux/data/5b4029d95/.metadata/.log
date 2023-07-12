@@ -1,0 +1,12 @@
+!SESSION 2023-07-09 15:50:53.325 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=11.0.19
+java.vendor=Ubuntu
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Framework arguments:  -ultimatedata /home/vm/UAutomizer-linux/data -tc /home/vm/UAutomizer-linux/config/AutomizerReach.xml -i /home/vm/c-files/list-simple/sll2n_insert_unequal_conj1.c -s /home/vm/UAutomizer-linux/config/svcomp-Reach-32bit-Automizer_Default.epf --cacsl2boogietranslator.entry.function main --witnessprinter.witness.directory /home/vm/UAutomizer-linux --witnessprinter.witness.filename witness.graphml --witnessprinter.write.witness.besides.input.file false --witnessprinter.graph.data.specification CHECK( init(main()), LTL(G ! call(reach_error())) )
+ --witnessprinter.graph.data.producer Automizer --witnessprinter.graph.data.architecture 32bit --witnessprinter.graph.data.programhash 6c98a86c29dc0d07e629b45839a83e0a7e10720b53edc22057fa850dc632ea5e
+Command-line arguments:  -data @noDefault -ultimatedata /home/vm/UAutomizer-linux/data -tc /home/vm/UAutomizer-linux/config/AutomizerReach.xml -i /home/vm/c-files/list-simple/sll2n_insert_unequal_conj1.c -s /home/vm/UAutomizer-linux/config/svcomp-Reach-32bit-Automizer_Default.epf --cacsl2boogietranslator.entry.function main --witnessprinter.witness.directory /home/vm/UAutomizer-linux --witnessprinter.witness.filename witness.graphml --witnessprinter.write.witness.besides.input.file false --witnessprinter.graph.data.specification CHECK( init(main()), LTL(G ! call(reach_error())) )
+ --witnessprinter.graph.data.producer Automizer --witnessprinter.graph.data.architecture 32bit --witnessprinter.graph.data.programhash 6c98a86c29dc0d07e629b45839a83e0a7e10720b53edc22057fa850dc632ea5e
+
+!ENTRY org.eclipse.cdt.core 1 0 2023-07-09 15:50:55.595
+!MESSAGE Indexed 'FLAG1ab5fd4d7' (0 sources, 0 headers) in 0.002 sec: 0 declarations; 0 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0%)

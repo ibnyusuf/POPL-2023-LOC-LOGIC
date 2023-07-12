@@ -1,0 +1,16 @@
+Apply\ one-shot\ large\ block\ encoding\ in\ concurrent\ analysis=true
+Automaton\ type\ used\ in\ concurrency\ analysis=PETRI_NET
+Command\ for\ external\ solver=cvc4 --incremental --print-success --lang smt
+Compute\ Hoare\ Annotation\ of\ negated\ interpolant\ automaton,\ abstraction\ and\ CFG=true
+Compute\ Interpolants\ along\ a\ Counterexample=FPandBP
+Independence\ relation\ used\ for\ large\ block\ encoding\ in\ concurrent\ analysis=SYNTACTIC
+Interpolants\ consolidation=false
+Logic\ for\ external\ solver=AUFBV
+Looper\ check\ in\ Petri\ net\ analysis=SEMANTIC
+Order\ on\ configurations\ for\ Petri\ net\ unfoldings=DBO
+Positions\ where\ we\ compute\ the\ Hoare\ Annotation=LoopsAndPotentialCycles
+SMT\ solver=External_ModelsAndUnsatCoreMode
+Trace\ refinement\ exception\ blacklist=DEPENDING
+Trace\ refinement\ strategy=WOLF
+Use\ separate\ solver\ for\ trace\ checks=true
+eclipse.preferences.version=1

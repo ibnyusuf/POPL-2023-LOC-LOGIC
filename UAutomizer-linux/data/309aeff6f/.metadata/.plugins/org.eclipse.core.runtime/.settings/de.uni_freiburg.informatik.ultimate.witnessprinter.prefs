@@ -1,0 +1,17 @@
+Command\ to\ execute\ witness\ verifier=
+Delete\ the\ .graphml\ file\ after\ verification=false
+Do\ not\ use\ ACSL=true
+Generate\ witnesses=true
+Graph\ data\ architecture=32bit
+Graph\ data\ producer=Automizer
+Graph\ data\ programhash=16fdec77aeb4c5beda3f4b43aa284b18391e37f9713231e5c48a5f7ce9e7d290
+Graph\ data\ specification=CHECK( init(main()), LTL(G \! call(reach_error())) )\n
+Log\ witness\ to\ console=false
+Path\ to\ .prp\ file=
+Timeout\ in\ seconds\ for\ witness\ verifier=10
+Use\ the\ following\ witness\ verifier=CPACHECKER
+Verify\ the\ witness\ and\ generate\ results=false
+Witness\ directory=/home/vm/UAutomizer-linux
+Witness\ filename=witness.graphml
+Write\ witness\ besides\ input\ file=false
+eclipse.preferences.version=1

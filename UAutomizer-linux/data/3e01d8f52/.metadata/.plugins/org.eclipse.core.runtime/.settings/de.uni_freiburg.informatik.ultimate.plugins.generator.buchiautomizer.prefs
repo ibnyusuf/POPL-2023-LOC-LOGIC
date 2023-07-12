@@ -1,0 +1,35 @@
+Add\ implications\ only\ for\ indices\ occuring\ in\ the\ current\ formula=true
+Add\ inequalities\ as\ additional\ conjuncts\ to\ the\ transformula=false
+Automata\ minimization\ after\ feasibility-based\ refinement=MINIMIZE_SEVPA
+Automata\ minimization\ after\ rank-based\ refinement=MINIMIZE_SEVPA
+Automaton\ type\ for\ concurrent\ programs=BUCHI_AUTOMATON
+Bouncer\ loop=false
+Bouncer\ stem=true
+Buchi\ complementation\ construction=NCSB
+Buchi\ interpolant\ automaton=STAGED
+Buchi\ interpolant\ automaton\ construction\ strategy=RHODODENDRON
+Cannibalize\ loop=false
+Command\ for\ external\ solver\ (GNTA\ synthesis)=z3 SMTLIB2_COMPLIANT\=true -memory\:1024 -smt2 -in -t\:12000
+Command\ for\ external\ solver\ (rank\ synthesis)=z3 SMTLIB2_COMPLIANT\=true -memory\:1024 -smt2 -in -t\:12000
+Compute\ Interpolants\ along\ a\ Counterexample=ForwardPredicates
+Construct\ termination\ proof\ for\ TermComp=false
+Determinization\ on\ demand=true
+Dump\ SMT\ script\ to\ file=false
+GNTA\ analysis=NONLINEAR
+Ignore\ down\ states=false
+Max\ number\ of\ loop\ unwindings=2
+NCSB\ implementation=ORIGINAL
+Number\ of\ GNTA\ directions=3
+Rank\ analysis=NONLINEAR
+ScroogeNondeterminism\ loop=false
+ScroogeNondeterminism\ stem=false
+Template\ benchmark\ mode=false
+To\ the\ following\ directory=
+Try\ to\ simplify\ termination\ arguments=true
+Try\ twofold\ refinement=true
+Use\ external\ solver\ (GNTA\ synthesis)=true
+Use\ external\ solver\ (rank\ synthesis)=true
+Use\ old\ map\ elimination=true
+Use\ only\ trivial\ implications\ for\ array\ writes=false
+Use\ only\ trivial\ implications\ for\ index\ assignments=true
+eclipse.preferences.version=1

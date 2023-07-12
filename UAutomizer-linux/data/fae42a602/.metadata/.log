@@ -1,0 +1,45 @@
+
+!ENTRY org.eclipse.cdt.core 4 0 2023-01-22 22:39:02.607
+!MESSAGE Error
+!STACK 1
+org.eclipse.core.runtime.CoreException: Problems encountered while setting project description.
+	at org.eclipse.core.internal.resources.Project.setDescription(Project.java:1285)
+	at org.eclipse.core.internal.resources.Project.setDescription(Project.java:1298)
+	at org.eclipse.cdt.core.CProjectNature.addNature(CProjectNature.java:81)
+	at org.eclipse.cdt.core.CProjectNature.addCNature(CProjectNature.java:47)
+	at org.eclipse.cdt.core.CCorePlugin$1.run(CCorePlugin.java:949)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2292)
+	at org.eclipse.cdt.core.CCorePlugin.createCProject(CCorePlugin.java:931)
+	at de.uni_freiburg.informatik.ultimate.cdt.parser.CDTParser.createConfiguredEmptyCdtProject(CDTParser.java:446)
+	at de.uni_freiburg.informatik.ultimate.cdt.parser.CDTParser.createCompleteCdtProject(CDTParser.java:232)
+	at de.uni_freiburg.informatik.ultimate.cdt.parser.CDTParser.computeASTsFromFilesViaCdt(CDTParser.java:349)
+	at de.uni_freiburg.informatik.ultimate.cdt.parser.CDTParser.parseAST(CDTParser.java:167)
+	at de.uni_freiburg.informatik.ultimate.core.coreplugin.ToolchainManager$Toolchain.runParser(ToolchainManager.java:440)
+	at de.uni_freiburg.informatik.ultimate.core.coreplugin.ToolchainManager$Toolchain.runParsers(ToolchainManager.java:285)
+	at de.uni_freiburg.informatik.ultimate.core.coreplugin.toolchain.DefaultToolchainJob.run(DefaultToolchainJob.java:142)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+Contains: The project description file (.project) for 'FLAG6ebfcf969' was missing.  This file contains important information about the project.  A new project description file has been created, but some information about the project may have been lost.
+!SUBENTRY 1 org.eclipse.core.resources 2 568 2023-01-22 22:39:02.607
+!MESSAGE Problems encountered while setting project description.
+!SUBENTRY 2 org.eclipse.core.resources 2 234 2023-01-22 22:39:02.608
+!MESSAGE The project description file (.project) for 'FLAG6ebfcf969' was missing.  This file contains important information about the project.  A new project description file has been created, but some information about the project may have been lost.
+
+!ENTRY org.eclipse.core.resources 4 568 2023-01-22 22:39:02.654
+!MESSAGE Could not write metadata for '/FLAG6ebfcf969'.
+!STACK 0
+java.io.FileNotFoundException: /home/vm/UAutomizer-linux/data/fae42a602/.metadata/.plugins/org.eclipse.core.resources/.projects/FLAG6ebfcf969/.markers.snap (No such file or directory)
+	at java.base/java.io.FileOutputStream.open0(Native Method)
+	at java.base/java.io.FileOutputStream.open(FileOutputStream.java:298)
+	at java.base/java.io.FileOutputStream.<init>(FileOutputStream.java:237)
+	at java.base/java.io.FileOutputStream.<init>(FileOutputStream.java:158)
+	at org.eclipse.core.internal.localstore.SafeChunkyOutputStream.<init>(SafeChunkyOutputStream.java:48)
+	at org.eclipse.core.internal.localstore.SafeChunkyOutputStream.<init>(SafeChunkyOutputStream.java:44)
+	at org.eclipse.core.internal.resources.SaveManager.visitAndSnap(SaveManager.java:1765)
+	at org.eclipse.core.internal.resources.SaveManager.visitAndSnap(SaveManager.java:1846)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1202)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1143)
+	at org.eclipse.core.internal.resources.DelayedSnapshotJob.run(DelayedSnapshotJob.java:55)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.cdt.core 1 0 2023-01-22 22:39:02.785
+!MESSAGE Indexed 'FLAG6ebfcf969' (0 sources, 0 headers) in 0.002 sec: 0 declarations; 0 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0%)
