@@ -22,7 +22,7 @@ for file in "$input_folder"/*; do
         output_file="$output_folder/$file_name.txt"
 
         # Run the executable command with arguments on the current file
-        $executable_command $command_arguments "$file" > "$output_file"
+        time timeout -s SIGKILL 900s $executable_command $command_arguments "$file" > "$output_file"
 
         # Print a message indicating the completion of processing for the current file
         echo "Processed $file"
