@@ -1,0 +1,168 @@
+#!/usr/bin/env python3
+#
+#  -- Symbiotic tool --
+#      2015 - 2021
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#  MA 02110-1301, USA.
+
+import sys
+import os
+from time import time
+
+# set path to our package
+exec_path = os.readlink(__file__) if os.path.islink(__file__) else __file__
+pth = os.path.join(os.path.dirname(exec_path), '../lib/symbioticpy')
+sys.path.append(os.path.abspath(pth))
+
+from symbiotic.utils import err, dbg
+from symbiotic.utils.utils import print_stdout, dump_paths
+from symbiotic.utils.timeout import Timeout, start_timeout, stop_timeout
+from symbiotic import SymbioticException, Symbiotic
+from symbiotic.options import parse_command_line
+from symbiotic.options import usage_msg, print_short_vers
+from symbiotic.runtime import SetupSymbiotic
+
+def create_testcomp_metadata(where, source, prps, is32bit):
+
+    from symbiotic.testsuits.metadata import MetadataWriter
+
+    saveto = os.path.abspath('{0}/metadata.xml'.format(where))
+    dbg('Creating TEST-COMP metadata file: {0}'.format(saveto))
+
+    try:
+        os.makedirs(os.path.dirname(saveto))
+    except OSError:
+        dbg('The directory for test suite already exists')
+
+    gen_md = MetadataWriter(source, prps, is32bit)
+    gen_md.write(saveto)
+
+def report_results(res, svcomp):
+    """
+    Report result to the user and terminate analysis
+    """
+    dbg(res)
+    color = 'BROWN'
+
+    if res.startswith('false'):
+        color = 'RED'
+        print_stdout('Error found.', color=color)
+    elif res == 'true':
+        color = 'GREEN'
+        print_stdout('No error found.', color=color)
+    elif res.startswith('error') or\
+            res.startswith('ERROR'):
+        color = 'RED'
+        print_stdout('Failure!', color=color)
+
+
+    if not svcomp:
+        print("NOTE: In the future, the result is going to be reported in SV-COMP format"
+              " only with --report=sv-comp switch")
+    if True:
+    #if svcomp:
+        sys.stdout.flush()
+        print_stdout('RESULT: ', print_nl=False)
+        print_stdout(res, color=color)
+    sys.stdout.flush()
+
+    return res
+
+if __name__ == "__main__":
+    # store time when we have started, so that we can
+    # measure how long Symbiotic ran
+    start_time = time()
+
+    opts, sources = parse_command_line()
+    dbg("Argv: {0}".format(" ".join(sys.argv)))
+
+    if opts.dump_env_only:
+        setup = SetupSymbiotic(opts)
+        setup.setup()
+        dump_paths(opts.dump_env_cmd)
+
+        sys.exit(0)
+
+    if len(sources) < 1:
+        print(usage_msg)
+        sys.exit(1)
+
+    print_short_vers()
+
+    # get absolute paths to sources
+    sources = opts.sources = list(map(os.path.abspath, sources))
+
+    # setup the runtime environment
+    setup = SetupSymbiotic(opts)
+    tool, environment = setup.setup()
+    dump_paths(fun=dbg)
+
+    if opts.timeout != 0:
+        start_timeout(opts.timeout)
+
+    if opts.test_comp:
+        # do not slice for coverage property
+        # FIXME: we can actually slice...
+        if opts.property.coverage():
+            opts.noslice = True
+
+        assert len(sources) == 1
+        create_testcomp_metadata(opts.testsuite_output, sources[0],
+                                 opts.property.ltl(), opts.is32bit)
+
+
+    print_stdout("INFO: Looking for {0}".format(opts.property.help()), color="BLUE")
+    symbiotic = None
+    ret = 0
+
+    try:
+        # let the show begin!
+        try:
+            symbiotic = Symbiotic(tool, sources, opts, environment)
+            res = symbiotic.run()
+            if res.startswith('error') or res.startswith('ERROR'):
+                ret = 1
+        except SymbioticException as e:
+            sys.stdout.flush()
+            sys.stderr.flush()
+
+            print_stdout('RESULT: ERROR ({0})'.format(str(e)))
+            err(' == FAILURE ==\n{0}'.format(str(e)))
+            ret = 1
+
+        report_results(res or "no result",
+                       opts.test_comp or opts.sv_comp or 'sv-comp' in opts.report_type)
+    except Timeout:
+        sys.stdout.flush()
+        sys.stderr.flush()
+
+        print_stdout('RESULT: timeout')
+    finally:
+        stop_timeout()
+        if symbiotic:
+            symbiotic.terminate()
+            symbiotic.kill()
+            symbiotic.kill_wait()
+
+    setup.cleanup()
+
+    if opts.test_comp:
+        print_stdout("Generated tests: {0}".format(opts.testsuite_output))
+
+    # print information about how long Symbiotic ran
+    print_stdout('INFO: Total time elapsed: {0}'.format(time() - start_time),
+                 color='WHITE')
+    sys.exit(ret)

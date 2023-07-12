@@ -1,0 +1,52 @@
+#!/bin/sh
+
+set -e
+
+USAGE="Usage: gen-c [-o output] bitcode"
+if [ $# -ne 1 -a $# -ne 3 ]; then
+	echo $USAGE
+	exit 1
+fi
+
+CCODE=
+BITCODE=
+
+while [ $# -gt 0 ]; do
+	case $1 in
+	"-o") shift; CCODE="$1";;
+	*) BITCODE="$1";; # take the last one
+	esac
+
+	shift;
+done
+
+if [ -z $BITCODE ]; then
+	echo $USAGE
+	exit 1
+fi
+
+LLVM2C=llvm2c
+if [ -z $CCODE ]; then
+	if echo "$BITCODE" | grep -q "\.bc$"; then
+		CCODE=${BITCODE%%.bc}.c
+	elif echo "$BITCODE" | grep -q "\.ll$"; then
+		CCODE=${BITCODE%%.ll}.c
+	else
+		echo "Unrecognized suffix"
+		CCODE=${BITCODE}.c
+	fi
+fi
+
+$LLVM2C -o "$CCODE"  "$BITCODE"
+
+
+# llvm-cbe does ugly things with some prototypes, we must fix them
+if [ "$LLVM2C" = "llvm-cbe" ]; then
+	sed -i 's@uint32_t\s\+__VERIFIER_nondet_int(.*)@int __VERIFIER_nondet_int(void)@' $CCODE
+	sed -i 's@void\s\+__VERIFIER_assume(int\s*,\s*.*)@int __VERIFIER_assume(int)@' $CCODE
+	sed -i 's@uint32_t\s\+main(void)@int main(void)@' $CCODE
+	sed -i 's@__noreturn\s\+void\s\+__VERIFIER_error(int,\s\+\.\.\.);@void __VERIFIER_error(void) __attribute__((noreturn));@' $CCODE
+	sed -i 's@__VERIFIER_error\s*(0\s\+/\*dummy\s\+arg\*/)@__VERIFIER_error()@' $CCODE
+else
+	sed -i 's@__VERIFIER_error\s*(\s*...\s*)@__VERIFIER_error()@' $CCODE
+fi

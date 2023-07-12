@@ -1,0 +1,699 @@
+{
+    "file": "marker.c",
+    "analyses": [["libPredatorPlugin.so"], ["libdgPointsToPlugin.so"],
+                 ["libValueRelationsPlugin.so"],
+                 ["libLLVMPointsToPlugin.so"]],
+    "flags": ["leakcheck"],
+    "phases": [
+        {
+            "instructionsRules": [
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "load",
+                    "operands": ["<t1>"],
+                    "getTypeSize": "<t2>"
+                }
+                ],
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_pointer"]
+                },
+                "conditions": [{"query":["isValidPointer", "<t1>", "<t2>"],
+                                "expectedResults":["false", "maybe", "unknown"]}],
+                "mustHoldForAll" : "true",
+                "remember" : "<t1>",
+                "where": "before",
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "store",
+                    "operands": ["<t1>", "<t2>"],
+                    "getTypeSize": "<t3>"
+                }
+                ],
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_pointer"]
+                },
+                "conditions": [{"query":["isValidPointer", "<t2>", "<t3>"],
+                                "expectedResults":["false","maybe", "unknown"]}],
+                "mustHoldForAll" : "true",
+                "remember" : "<t2>",
+                "where": "before",
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "store",
+                    "operands": ["<val>", "<ptr>"]
+                }
+                ],
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_pointer"]
+                },
+                "conditions": [{"query":["storeMayLeak", "<this>"],
+                                "expectedResults":["true","maybe","unknown"]}],
+                "mustHoldForAll" : "true",
+                "setFlags": [["leakcheck", "true"]],
+                "where": "before",
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["<p>","*", "<len>","*", "llvm.memset.p0i8.i32"]
+                }
+                ],
+                "conditions": [{"query":["isValidPointer", "<p>", "<len>"],
+                                "expectedResults":["false","maybe", "unknown"]}],
+                "mustHoldForAll" : "true",
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_pointer"]
+                },
+                "remember" : "<p>",
+                "where": "before",
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["<p>","*", "<len>","*", "llvm.memset.p0i8.i64"]
+                }
+                ],
+                "conditions": [{"query":["isValidPointer", "<p>", "<len>"],
+                                "expectedResults":["false","maybe", "unknown"]}],
+                "mustHoldForAll" : "true",
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_pointer"]
+                },
+                "remember" : "<p>",
+                "where": "before",
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["<p>", "*", "<len>", "memset"]
+                }
+                ],
+                "conditions": [{"query":["isValidPointer", "<p>", "<len>"],
+                                "expectedResults":["false","maybe", "unknown"]}],
+                "mustHoldForAll" : "true",
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_pointer"]
+                },
+                "remember" : "<p>",
+                "where": "before",
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["<p>","*", "<len>","memcpy"]
+                }
+                ],
+                "conditions": [{"query":["isValidPointer", "<p>", "<len>"],
+                                "expectedResults":["false","maybe", "unknown"]}],
+                "mustHoldForAll" : "true",
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_pointer"]
+                },
+                "remember" : "<p>",
+                "where": "before",
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["*","<p>", "<len>","memcpy"]
+                }
+                ],
+                "conditions": [{"query":["isValidPointer", "<p>", "<len>"],
+                                "expectedResults":["false","maybe", "unknown"]}],
+                "mustHoldForAll" : "true",
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_pointer"]
+                },
+                "remember" : "<p>",
+                "where": "before",
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["<p>","*", "<len>","*", "llvm.memcpy.p0i8.p0i8.i32"]
+                }
+                ],
+                "conditions": [{"query":["isValidPointer", "<p>", "<len>"],
+                                "expectedResults":["false","maybe", "unknown"]}],
+                "mustHoldForAll" : "true",
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_pointer"]
+                },
+                "remember" : "<p>",
+                "where": "before",
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["*", "<p>", "<len>","*", "llvm.memcpy.p0i8.p0i8.i32"]
+                }
+                ],
+                "conditions": [{"query":["isValidPointer", "<p>", "<len>"],
+                                "expectedResults":["false","maybe", "unknown"]}],
+                "mustHoldForAll" : "true",
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_pointer"]
+                },
+                "remember" : "<p>",
+                "where": "before",
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["<p>", "*", "<len>", "*", "llvm.memcpy.p0i8.p0i8.i64"]
+                }
+                ],
+                "conditions": [{"query":["isValidPointer", "<p>", "<len>"],
+                                "expectedResults":["false","maybe", "unknown"]}],
+                "mustHoldForAll" : "true",
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_pointer"]
+                },
+                "remember" : "<p>",
+                "where": "before",
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["*", "<p>", "<len>", "*", "llvm.memcpy.p0i8.p0i8.i64"]
+                }
+                ],
+                "conditions": [{"query":["isValidPointer", "<p>", "<len>"],
+                                "expectedResults":["false","maybe", "unknown"]}],
+                "mustHoldForAll" : "true",
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_pointer"]
+                },
+                "remember" : "<p>",
+                "where": "before",
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["<p>", "*", "<len>","memmove"]
+                }
+                ],
+                "conditions": [{"query":["isValidPointer", "<p>", "<len>"],
+                                "expectedResults":["false","maybe", "unknown"]}],
+                "mustHoldForAll" : "true",
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_pointer"]
+                },
+                "remember" : "<p>",
+                "where": "before",
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["*", "<p>", "<len>","memmove"]
+                }
+                ],
+                "conditions": [{"query":["isValidPointer", "<p>", "<len>"],
+                                "expectedResults":["false","maybe", "unknown"]}],
+                "mustHoldForAll" : "true",
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_pointer"]
+                },
+                "remember" : "<p>",
+                "where": "before",
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["<p>", "*", "<len>", "*", "llvm.memmove.p0i8.p0i8.i32"]
+                }
+                ],
+                "conditions": [{"query":["isValidPointer", "<p>", "<len>"],
+                                "expectedResults":["false","maybe", "unknown"]}],
+                "mustHoldForAll" : "true",
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_pointer"]
+                },
+                "remember" : "<p>",
+                "where": "before",
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["*", "<p>", "<len>", "*", "llvm.memmove.p0i8.p0i8.i32"]
+                }
+                ],
+                "conditions": [{"query":["isValidPointer", "<p>", "<len>"],
+                                "expectedResults":["false","maybe", "unknown"]}],
+                "mustHoldForAll" : "true",
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_pointer"]
+                },
+                "remember" : "<p>",
+                "where": "before",
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["<p>", "*", "<len>", "*", "llvm.memmove.p0i8.p0i8.i64"]
+                }
+                ],
+                "conditions": [{"query":["isValidPointer", "<p>", "<len>"],
+                                "expectedResults":["false","maybe", "unknown"]}],
+                "mustHoldForAll" : "true",
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_pointer"]
+                },
+                "remember" : "<p>",
+                "where": "before",
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["*", "<p>", "<len>", "*","llvm.memmove.p0i8.p0i8.i64"]
+                }
+                ],
+                "conditions": [{"query":["isValidPointer", "<p>", "<len>"],
+                                "expectedResults":["false","maybe", "unknown"]}],
+                "mustHoldForAll" : "true",
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_pointer"]
+                },
+                "remember" : "<p>",
+                "where": "before",
+                "in": "*"
+            }
+            ]
+        },
+        {   "instructionsRules":
+            [
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "store",
+                    "operands": ["<val>", "<ptr>"]
+                }
+                ],
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_pointer"]
+                },
+                "conditions": [{"query":["mayBeLeaked", "<val>"],
+                                "expectedResults":["true"]}],
+                "mustHoldForAll" : "true",
+                "setFlags": [["leakcheck", "true"]],
+                "where": "before",
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["<p>", "free"]
+                }
+                ],
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["<p>", "__INSTR_mark_free"]
+                },
+                "where": "before",
+                "conditions": [{"query":["mayBeLeakedOrFreed", "<p>"],
+		                "expectedResults":["true"]}],
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["<p>", "free"]
+                }
+                ],
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_free"]
+                },
+                "where": "before",
+                "conditions": [{"query":["mayBeLeakedOrFreed", "<p>"],
+		                "expectedResults":["false"]},
+                               {"query":["safeForFree", "<p>"], "expectedResults":["maybe","false"]}],
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["<p>", "free"]
+                }
+                ],
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_free"]
+                },
+                "where": "before",
+                "conditions": [{"query":["mayBeLeakedOrFreed", "<p>"],
+                                "expectedResults":["false"]},
+                               {"query":["pointsToRemembered", "<p>"],
+                                "expectedResults":["true", "maybe"]}],
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "<p>",
+                    "instruction": "call",
+                    "operands": ["<size>", "malloc"]
+                }
+                ],
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_allocation"]
+                },
+                "where": "before",
+                "conditions": [{"query":["mayBeLeaked", "<p>"],
+                                "expectedResults":["true"]}],
+                "setFlags": [["leakcheck", "true"]],
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "<p>",
+                    "instruction": "call",
+                    "operands": ["<size>", "__VERIFIER_malloc"]
+                }
+                ],
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_allocation"]
+                },
+                "where": "before",
+                "conditions": [{"query":["mayBeLeaked", "<p>"],
+                                "expectedResults":["true"]}],
+                "setFlags": [["leakcheck", "true"]],
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "<p>",
+                    "instruction": "call",
+                    "operands": ["<size>", "__VERIFIER_malloc0"]
+                }
+                ],
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_allocation"]
+                },
+                "where": "before",
+                "conditions": [{"query":["mayBeLeaked", "<p>"],
+                                "expectedResults":["true"]}],
+                "setFlags": [["leakcheck", "true"]],
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "<p>",
+                    "instruction": "call",
+                    "operands": ["<size1>", "<size2>", "calloc"]
+                }
+                ],
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_allocation"]
+                },
+                "where": "before",
+                "conditions": [{"query":["mayBeLeaked", "<p>"],
+                                "expectedResults":["true"]}],
+                "setFlags": [["leakcheck", "true"]],
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "<p>",
+                    "instruction": "call",
+                    "operands": ["<size1>", "<size2>", "__VERIFIER_calloc"]
+                }
+                ],
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_allocation"]
+                },
+                "where": "before",
+                "conditions": [{"query":["mayBeLeaked", "<p>"],
+                                "expectedResults":["true"]}],
+                "setFlags": [["leakcheck", "true"]],
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "<p>",
+                    "instruction": "call",
+                    "operands": ["<size1>", "<size2>", "__VERIFIER_calloc0"]
+                }
+                ],
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_allocation"]
+                },
+                "where": "before",
+                "conditions": [{"query":["mayBeLeaked", "<p>"],
+                                "expectedResults":["true"]}],
+                "setFlags": [["leakcheck", "true"]],
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "<p>",
+                    "instruction": "call",
+                    "operands": ["<size1>", "<size2>", "realloc"]
+                }
+                ],
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_allocation"]
+                },
+                "where": "before",
+                "conditions": [{"query":["mayBeLeaked", "<p>"],
+                                "expectedResults":["true"]}],
+                "setFlags": [["leakcheck", "true"]],
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "<p>",
+                    "instruction": "call",
+                    "operands": ["<oldmem>", "<size2>", "realloc"]
+                }
+                ],
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_allocation"]
+                },
+                "where": "before",
+                "conditions": [{"query":["mayBeLeaked", "<p>"],
+                                "expectedResults":["false"]},
+                               {"query":["isInvalid", "<oldmem>"],
+                                "expectedResults":["maybe", "false"]}],
+                "in": "*"
+            }
+            ]
+        },
+        {   "instructionsRules":
+            [
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["<val>", "__VERIFIER_exit"]
+                }
+                ],
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_exit"]
+                },
+                "conditions": [{"query":["leakcheck"], "expectedResults": ["true"]}],
+                "where": "before",
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["<val>", "exit"]
+                }
+                ],
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_exit"]
+                },
+                "conditions": [{"query":["leakcheck"], "expectedResults": ["true"]}],
+                "where": "before",
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["<val>", "_exit"]
+                }
+                ],
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_exit"]
+                },
+                "conditions": [{"query":["leakcheck"], "expectedResults": ["true"]}],
+                "where": "before",
+                "in": "*"
+            },
+            {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["<val>", "_Exit"]
+                }
+                ],
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_exit"]
+                },
+                "conditions": [{"query":["leakcheck"], "expectedResults": ["true"]}],
+                "where": "before",
+                "in": "*"
+            },
+	    {
+                "findInstructions": [
+                {
+                    "returnValue": "*",
+                    "instruction": "ret",
+                    "operands": ["*"]
+                }
+                ],
+                "newInstruction": {
+                    "returnValue": "*",
+                    "instruction": "call",
+                    "operands": ["__INSTR_mark_exit"]
+                },
+                "conditions": [{"query":["leakcheck"], "expectedResults": ["true"]}],
+                "where": "before",
+                "in": "main"
+            }
+
+        ]
+        }
+    ]
+}
